@@ -37,6 +37,6 @@ client.on("interactionCreate", async interaction => {
 	chatManager.leerInteraccion(interaction);
 });
 
-client.login("MTI0MjkxNjEwODcxMzk4NDA2MQ.G8AmFL.6xUp9SOB3brzdbqrDmMEe8gySKaBFL-2VxgeDg");
+client.login("MTI0MjkxNjEwODcxMzk4NDA2MQ.GlSYYe._ExTtS4WKYUfO9YTqJPOTIEFNo6MCDJjVq_z88");
 
 exports.client = client;

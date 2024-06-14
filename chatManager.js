@@ -5,10 +5,10 @@ const dataManager = require("./dataManager");
 
 //Lee los comandos y ejecuta otras funciones en base a su contenido
 function leerMensaje(message, mode) {
-	if(mode == 1){
+	if (mode == 1) {
 		const comando = message.content.substring(5);
 		const channel = index.client.channels.cache.get(message.channelId);
-	
+
 		switch (comando) {
 			default:
 				channel.send("Mis funcionalidades son accesibles usando `!t3c`, ¡No te olvides! También puedes ver todos los comandos con `!t3c help`");
@@ -17,17 +17,17 @@ function leerMensaje(message, mode) {
 				help(channel);
 				break;
 		}
-	}else if(mode == 2){
-		if(message.length == 8){
+	} else if (mode == 2) {
+		if (message.length == 8) {
 			dataManager.requestAll();
 			menu(message.channel, "base");
-		}else{
+		} else {
 			const comando = message.content.substring(9);
 			const channel = index.client.channels.cache.get(message.channelId);
 
 			dataManager.requestAll(comando);
 			menu(message.channel, "base");
-		}	
+		}
 	}
 }
 
@@ -85,8 +85,6 @@ function menu(channel, estado) {
 					.setEmoji("⚔"),
 			);
 
-		/* Por si sirve el Embed que hay aquí (https://discord.com/channels/1065768315093532753/1076564590734868541/1076655303841562644),
-		está sacado de aquí: https://discordjs.guide/popular-topics/embeds.html#using-the-embed-constructor */
 		const attachment = new AttachmentBuilder('t3c.png', { name: 't3c.png' })
 		const embed = new EmbedBuilder()
 			.setColor(0x0099FF)
@@ -110,18 +108,24 @@ function menu(channel, estado) {
 			.setTitle('Listado de jugadores')
 			.setDescription('Nombre y descripción de los equipos. Puedes filtrar por nombre usando el comando `!teams3c nombre`');
 
-		dataManager.loadedPlayers.forEach(function (array) {
-			//console.log(array[0] + ", " + array[1])
-			if (array[1] == null || array[1] == "") {
-				embed.addFields(
-					{ name: array[0], value: "Sin descripción" }
-				)
-			} else {
-				embed.addFields(
-					{ name: array[0], value: "" + array[1] }
-				)
-			}
-		});
+		if (dataManager.loadedPlayers.length > 0) {
+			dataManager.loadedPlayers.forEach(function (array) {
+				//console.log(array[0] + ", " + array[1])
+				if (array[1] == null || array[1] == "") {
+					embed.addFields(
+						{ name: array[0], value: "Sin descripción" }
+					)
+				} else {
+					embed.addFields(
+						{ name: array[0], value: "" + array[1] }
+					)
+				}
+			});
+		} else {
+			embed.addFields(
+				{ name: "No se han encontrado resultados", value: "Escribe `!t3c help` para ver los comandos" }
+			)
+		}
 
 		channel.send({ ephemeral: true, embeds: [embed], components: [row] });
 	} else if (estado == "equipo") {
@@ -139,19 +143,25 @@ function menu(channel, estado) {
 			.setTitle('Listado de equipos')
 			.setDescription('Nombre y descripción de los equipos. Puedes filtrar por nombre usando el comando `!teams3c nombre`');
 
-		dataManager.loadedTeams.forEach(function (array) {
-			if (array[1] == null || array[1] == "") {
-				embed.addFields(
-					{ name: array[0], value: "Sin descripción" }
-				)
-			} else {
-				embed.addFields(
-					{ name: array[0], value: "" + array[1] }
-				)
-			}
-		});
+		if (dataManager.loadedTeams.length > 0) {
+			dataManager.loadedTeams.forEach(function (array) {
+				if (array[1] == null || array[1] == "") {
+					embed.addFields(
+						{ name: array[0], value: "Sin descripción" }
+					)
+				} else {
+					embed.addFields(
+						{ name: array[0], value: "" + array[1] }
+					)
+				}
+			});
+		} else {
+			embed.addFields(
+				{ name: "No se han encontrado resultados", value: "Escribe `!t3c help` para ver los comandos" }
+			)
+		}
 
-		channel.send({ ephemeral: true, embeds: [embed], components: [row]});
+		channel.send({ ephemeral: true, embeds: [embed], components: [row] });
 	} else if (estado == "torneo") {
 		const row = new ActionRowBuilder()
 			.addComponents(
@@ -167,19 +177,25 @@ function menu(channel, estado) {
 			.setTitle('Listado de torneos')
 			.setDescription('Nombre y descripción de los torneos. Puedes filtrar por nombre usando el comando `!teams3c nombre`');
 
-		dataManager.loadedTournaments.forEach(function (array) {
-			if (array[1] == null || array[1] == "") {
-				embed.addFields(
-					{ name: array[0], value: "Sin descripción" }
-				)
-			} else {
-				embed.addFields(
-					{ name: array[0], value: "" + array[1] }
-				)
-			}
-		});
+		if (dataManager.loadedTournaments.length > 0) {
+			dataManager.loadedTournaments.forEach(function (array) {
+				if (array[1] == null || array[1] == "") {
+					embed.addFields(
+						{ name: array[0], value: "Sin descripción" }
+					)
+				} else {
+					embed.addFields(
+						{ name: array[0], value: "" + array[1] }
+					)
+				}
+			});
+		} else {
+			embed.addFields(
+				{ name: "No se han encontrado resultados", value: "Escribe `!t3c help` para ver los comandos" }
+			)
+		}
 
-		channel.send({ ephemeral: true, embeds: [embed], components: [row]});
+		channel.send({ ephemeral: true, embeds: [embed], components: [row] });
 	}
 }
 
